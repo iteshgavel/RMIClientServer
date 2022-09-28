@@ -1,0 +1,59 @@
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.server.UnicastRemoteObject;
+
+class RMIDemoImpl extends UnicastRemoteObject implements RMIDemoInterface{
+
+	private static final long serialVersionUID = 1L;
+	
+	protected RMIDemoImpl() throws RemoteException {
+		super();
+	}
+
+	@Override
+	public String sayHello() throws RemoteException {
+		return "Hello Client! Welcome:";
+	}
+
+	@Override
+	public int add(int a, int b) throws RemoteException {
+		return a+b;
+	}
+
+	@Override
+	public int subtract(int a, int b) throws RemoteException {
+		return a-b;
+	}
+
+	@Override
+	public int multiply(int a, int b) throws RemoteException {
+		return a*b;
+	}
+
+	@Override
+	public int divide(int a, int b) throws RemoteException {
+		return a/b;
+	}
+	
+}
+
+public class RMIDemoServer {
+
+	public static void main(String[] args) {
+		
+		try {
+			RMIDemoInterface rmiDemoObject = new RMIDemoImpl();
+			LocateRegistry.createRegistry(1099);
+			Naming.rebind("rmiDemoObject",rmiDemoObject);
+		} 
+		catch (RemoteException e) {
+			e.printStackTrace();
+		} 
+		catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+	}
+
+}
